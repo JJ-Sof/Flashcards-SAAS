@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "./components/Header";
+import MuiThemeProvider from "./theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +16,8 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <Header />
-          {children}
+          <MuiThemeProvider><Header />
+            {children}</MuiThemeProvider>
         </body>
       </html>
     </ClerkProvider>
