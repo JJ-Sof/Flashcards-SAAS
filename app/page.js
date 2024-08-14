@@ -2,14 +2,19 @@ import React from 'react';
 import Image from "next/image";
 import getStripe from "@/utils/get-stripe";
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import Testimonials from '../components/Testimonials';
+import MuiThemeProvider from '../app/theme';
+import MeetTheCreators from '../components/MeetTheCreators';
 
 export default function LandingPage() {
   return (
+    <MuiThemeProvider>
     <Container maxWidth="lg">
       
       {/* Hero Section */}
       <Box
-        height="400px"
+        height="600px"
         bgcolor="grey.200"
         display="flex"
         justifyContent="center"
@@ -29,22 +34,33 @@ export default function LandingPage() {
 
       {/* Flashcard Demo */}
       <Box
-        height="300px"
-        bgcolor="grey.200"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        my={4}
-        borderRadius={2}
-      >
-        <Typography variant="h4">Flashcard Demo (GIF/Video)</Typography>
-      </Box>
+  height="600px"
+  bgcolor="grey.200"
+  display="flex"
+  justifyContent="center"
+  alignItems="center"
+  my={4}
+  borderRadius={2}
+  overflow="hidden" // Ensures iframe doesn't overflow
+>
+  <iframe
+    width="100%"
+    height="100%"
+    src="https://www.youtube.com/embed/1SBxsv_T_Jw?controls=0&loop=1&playlist=1SBxsv_T_Jw&modestbranding=1&playsinline=1&autoplay=1"
+    title="Flashcard Demo"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  ></iframe>
+</Box>
+
 
       {/* Features Section */}
+      <Box height = "800px" padding={10}>
       <Grid container spacing={3} my={4}>
         <Grid item xs={12} md={4}>
           <Box
-            height="200px"
+            height="500px"
             bgcolor="grey.200"
             display="flex"
             justifyContent="center"
@@ -56,7 +72,7 @@ export default function LandingPage() {
         </Grid>
         <Grid item xs={12} md={4}>
           <Box
-            height="200px"
+            height="500px"
             bgcolor="grey.200"
             display="flex"
             justifyContent="center"
@@ -68,7 +84,7 @@ export default function LandingPage() {
         </Grid>
         <Grid item xs={12} md={4}>
           <Box
-            height="200px"
+            height="500px"
             bgcolor="grey.200"
             display="flex"
             justifyContent="center"
@@ -79,12 +95,14 @@ export default function LandingPage() {
           </Box>
         </Grid>
       </Grid>
+      </Box>
 
       {/* Payment Options */}
+      <Box height = "600px" padding={10}>
       <Grid container spacing={3} my={4}>
         <Grid item xs={12} md={6}>
           <Box
-            height="150px"
+            height="300px"
             bgcolor="grey.200"
             display="flex"
             justifyContent="center"
@@ -96,7 +114,7 @@ export default function LandingPage() {
         </Grid>
         <Grid item xs={12} md={6}>
           <Box
-            height="150px"
+            height="300px"
             bgcolor="grey.200"
             display="flex"
             justifyContent="center"
@@ -107,63 +125,20 @@ export default function LandingPage() {
           </Box>
         </Grid>
       </Grid>
+      </Box>
 
       {/* Testimonials */}
-      <Box
-        height="200px"
-        bgcolor="grey.200"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        my={4}
-        borderRadius={2}
-      >
-        <Typography variant="h5">Testimonials</Typography>
+      <Box height = "500px" padding={5}>
+        <Testimonials />
       </Box>
 
       {/* Meet the Creators */}
-      <Box textAlign="center" my={4}>
-        <Typography variant="h4" mb={2}>Meet the Creators!</Typography>
-        <Grid container spacing={2} justifyContent="center">
-          {/* Placeholder for Creator images */}
-          <Grid item xs={4} md={2}>
-            <Box
-              height="100px"
-              width="100px"
-              bgcolor="grey.200"
-              borderRadius="50%"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              mx="auto"
-            />
-          </Grid>
-          <Grid item xs={4} md={2}>
-            <Box
-              height="100px"
-              width="100px"
-              bgcolor="grey.200"
-              borderRadius="50%"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              mx="auto"
-            />
-          </Grid>
-          <Grid item xs={4} md={2}>
-            <Box
-              height="100px"
-              width="100px"
-              bgcolor="grey.200"
-              borderRadius="50%"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              mx="auto"
-            />
-          </Grid>
-        </Grid>
+      <Box height = "500px" padding={5}>
+      <MeetTheCreators />
       </Box>
+
+
     </Container>
+    </MuiThemeProvider>
   );
 }

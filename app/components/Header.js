@@ -1,35 +1,66 @@
-import React from 'react';
+import React from "react";
 import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Button, Container, Typography } from "@mui/material";
 
 export default function Header() {
   return (
-    <Box 
-      bgcolor="grey.100" 
-      py={2} 
-      boxShadow={1}
+    <Box
       sx={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 1100,
+        padding: "10px",
+        display: "flex",
+        height: "60px",
+        backgroundColor: "lightblue",
+        alignItems: "center",
       }}
     >
-      <Container 
-        maxWidth="lg" 
-        sx={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center' 
+      <Typography
+        variant="h4"
+        sx={{
+          flex: 1,
         }}
       >
-        <Typography variant="h6">Your Logo</Typography>
-        <Button 
-            variant="outlined" 
-            color="primary"
-        >
-            Sign in / Sign up
-        </Button>
-      </Container>
+        Logo
+      </Typography>
+      <SignedOut>
+        <SignInButton mode="modal">
+          <Button size="small" variant="contained">
+            Login/Signup
+          </Button>
+        </SignInButton>
+      </SignedOut>
+      <SignedIn>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Button
+            variant="contained"
+            size="small"
+            sx={{
+              backgroundColor: "lightcoral",
+              "&:hover": {
+                backgroundColor: "darkred",
+              },
+            }}
+          >
+            + Create
+          </Button>
+
+          <UserButton
+            appearance={{
+              elements: {
+                userButtonAvatarBox: {
+                  width: 32,
+                  height: 32,
+                },
+                userButtonText: {
+                  display: "block",
+                  marginLeft: "8px",
+                  fontWeight: "bold",
+                  fontSize: "14px",
+                },
+              },
+            }}
+          />
+        </Box>
+      </SignedIn>
     </Box>
   );
 }
