@@ -1,17 +1,43 @@
-import React from 'react';
+import React from "react";
 import Image from "next/image";
 import getStripe from "@/utils/get-stripe";
+<<<<<<< HEAD
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Testimonials from '../components/Testimonials';
 import MuiThemeProvider from '../app/theme';
 import MeetTheCreators from '../components/MeetTheCreators';
+=======
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
+>>>>>>> 97df1d1de045633bc51743b16f5a6efd029d29f7
 
 export default function LandingPage() {
+  const handleSubmit = async () => {
+    const checkoutSession = await fetch("api/checkout_session", {
+      method: "POST",
+      headers: {
+        origin: "http/localhost:3000",
+      },
+    });
+    const checkoutSessionJson = await checkoutSession.json();
+
+    if (checkoutSession.statusCode === 500) {
+      console.error(checkoutSession.message);
+      return;
+    }
+
+    const stripe = await getStripe();
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: checkoutSessionJson.id,
+    });
+
+    if (error) {
+      console.warn(error.message);
+    }
+  };
   return (
     <MuiThemeProvider>
     <Container maxWidth="lg">
-      
       {/* Hero Section */}
       <Box
         height="600px"
@@ -133,8 +159,54 @@ export default function LandingPage() {
       </Box>
 
       {/* Meet the Creators */}
+<<<<<<< HEAD
       <Box height = "500px" padding={5}>
       <MeetTheCreators />
+=======
+      <Box textAlign="center" my={4}>
+        <Typography variant="h4" mb={2}>
+          Meet the Creators!
+        </Typography>
+        <Grid container spacing={2} justifyContent="center">
+          {/* Placeholder for Creator images */}
+          <Grid item xs={4} md={2}>
+            <Box
+              height="100px"
+              width="100px"
+              bgcolor="grey.200"
+              borderRadius="50%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              mx="auto"
+            />
+          </Grid>
+          <Grid item xs={4} md={2}>
+            <Box
+              height="100px"
+              width="100px"
+              bgcolor="grey.200"
+              borderRadius="50%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              mx="auto"
+            />
+          </Grid>
+          <Grid item xs={4} md={2}>
+            <Box
+              height="100px"
+              width="100px"
+              bgcolor="grey.200"
+              borderRadius="50%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              mx="auto"
+            />
+          </Grid>
+        </Grid>
+>>>>>>> 97df1d1de045633bc51743b16f5a6efd029d29f7
       </Box>
 
 
