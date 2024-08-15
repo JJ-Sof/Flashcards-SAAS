@@ -1,6 +1,12 @@
+<<<<<<< HEAD
+import React from "react";
+import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
+import { Box, Button, Container, Typography } from "@mui/material";
+=======
 import { Box, Typography, Button } from "@mui/material";
 import React from "react";
 import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
+>>>>>>> 97df1d1de045633bc51743b16f5a6efd029d29f7
 
 const Header = () => {
   return (
