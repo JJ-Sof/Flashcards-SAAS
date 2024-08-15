@@ -11,6 +11,7 @@ Customization: Tailor the flashcards to the user's specified requirements, such 
 
 Variety in Question Types: Depending on the subject, incorporate different types of questions, such as definitions, true/false, multiple-choice, or fill-in-the-blank.
 Feedback and Improvement: Be open to user feedback and willing to adjust or improve the flashcards as needed.
+You are also to generate 10 cards.
 
 
 
