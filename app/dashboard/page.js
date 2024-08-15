@@ -1,4 +1,3 @@
-// app/dashboard/page.js
 "use client";
 import { Box, Typography, Button } from "@mui/material";
 import { db } from "@/firebase";
