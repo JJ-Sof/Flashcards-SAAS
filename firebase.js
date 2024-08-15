@@ -1,6 +1,6 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore"; // Import getFirestore from 'firebase/firestore'
+import { isSupported, getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -13,9 +13,25 @@ const firebaseConfig = {
   storageBucket: "flashcards-saas-3f82f.appspot.com",
   messagingSenderId: "925023896014",
   appId: "1:925023896014:web:5fb5bd6020fc17c84e6b9f",
-  measurementId: "G-T493F5KTVE"
+  measurementId: "G-T493F5KTVE",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+let analytics;
+if (typeof window !== "undefined") {
+  isSupported()
+    .then((supported) => {
+      if (supported) {
+        analytics = getAnalytics(app);
+      }
+    })
+    .catch((error) => {
+      console.error("Error initializing analytics:", error);
+    });
+}
+
+// Initialize Firestore
+const db = getFirestore(app);
+
+export { db, analytics };

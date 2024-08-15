@@ -1,9 +1,13 @@
+"use client";
 import React from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import getStripe from "@/utils/get-stripe";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 
 export default function LandingPage() {
+  const router = useRouter(); // Initialize useRouter
+
   const handleSubmit = async () => {
     const checkoutSession = await fetch("api/checkout_session", {
       method: "POST",
@@ -27,6 +31,11 @@ export default function LandingPage() {
       console.warn(error.message);
     }
   };
+
+  const handleGetStarted = () => {
+    router.push("/dashboard"); // Redirect to the dashboard page
+  };
+
   return (
     <Container maxWidth="lg">
       {/* Hero Section */}
@@ -44,7 +53,12 @@ export default function LandingPage() {
 
       {/* Get Started Button */}
       <Box textAlign="center" my={4}>
-        <Button variant="contained" color="primary" size="large">
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={handleGetStarted}
+        >
           Get Started
         </Button>
       </Box>
@@ -125,7 +139,9 @@ export default function LandingPage() {
             alignItems="center"
             borderRadius={2}
           >
-            <Typography variant="h6">Payment Option 02</Typography>
+            <Button variant="contained" onClick={handleSubmit}>
+              Payment Option 02
+            </Button>
           </Box>
         </Grid>
       </Grid>
