@@ -32,7 +32,7 @@ export default function Header() {
                 color: "#F0F1FA",
               }}
             >
-              ◆smartflash
+              ◆SmartFlash
             </Typography>
           </Box>
           {/* Authentication Buttons */}
