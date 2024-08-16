@@ -1,13 +1,16 @@
 "use client";
-import { Box, Typography, Button, Paper } from "@mui/material";
+import { Box, Typography, Button, Paper, IconButton } from "@mui/material";
 import { db } from "@/firebase";
+import { useRouter } from "next/navigation";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
+import HomeIcon from "@mui/icons-material/Home";
 
 const Dashboard = () => {
   const { userId } = useAuth();
   const [flashcardSets, setFlashcardSets] = useState([]);
+  const router = useRouter();
 
   const fetchFlashcardSets = async () => {
     if (!userId) return;
@@ -46,8 +49,19 @@ const Dashboard = () => {
     fetchFlashcardSets();
   }, [userId]);
 
+  const handleCreate = () => {
+    router.push("/generate");
+  };
+
   return (
     <Box sx={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
+      <IconButton
+        onClick={() => {
+          router.push("/"); // Redirects to the home page
+        }}
+      >
+        <HomeIcon />
+      </IconButton>
       <Box
         sx={{
           padding: "2px",
@@ -68,6 +82,7 @@ const Dashboard = () => {
         </Typography>
         <Button
           variant="contained"
+          onClick={handleCreate}
           sx={{
             padding: "6px 16px",
             alignSelf: "center",

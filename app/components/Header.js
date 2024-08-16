@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
-import Image from "next/image";
+import Link from "next/link";
 import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
 
 export default function Header() {
@@ -45,31 +45,53 @@ export default function Header() {
               </SignInButton>
             </SignedOut>
             <SignedIn>
-              <Button
-                variant="outlined" // Match the variant of the Sign in button
-                color="primary" // Match the color of the Sign in button
-                size="small" // Match the size of the Sign in button
-                sx={{
-                  borderColor: "primary.main",
-                  color: "primary.main",
-                  "&:hover": {
-                    borderColor: "primary.dark", // Darker border on hover
-                    color: "primary.dark", // Darker text color on hover
-                    backgroundColor: "rgba(0, 0, 0, 0.08)", // Light background on hover
-                  },
-                }}
-              >
-                <Typography variant="caption" sx={{ color: "white" }}>
-                  create
-                </Typography>
-              </Button>
+              <Link href="/dashboard" passHref>
+                <Button
+                  variant="outlined" // Match the variant of the Sign in button
+                  color="primary" // Match the color of the Sign in button
+                  size="small" // Match the size of the Sign in button
+                  sx={{
+                    borderColor: "primary.main",
+                    color: "primary.main",
+                    "&:hover": {
+                      borderColor: "primary.dark", // Darker border on hover
+                      color: "primary.dark", // Darker text color on hover
+                      backgroundColor: "rgba(0, 0, 0, 0.08)", // Light background on hover
+                    },
+                  }}
+                >
+                  <Typography variant="caption" sx={{ color: "white" }}>
+                    Dashboard
+                  </Typography>
+                </Button>
+              </Link>
+              <Link href="/generate" passHref>
+                <Button
+                  variant="outlined" // Match the variant of the Sign in button
+                  color="primary" // Match the color of the Sign in button
+                  size="small" // Match the size of the Sign in button
+                  sx={{
+                    borderColor: "primary.main",
+                    color: "primary.main",
+                    "&:hover": {
+                      borderColor: "primary.dark", // Darker border on hover
+                      color: "primary.dark", // Darker text color on hover
+                      backgroundColor: "rgba(0, 0, 0, 0.08)", // Light background on hover
+                    },
+                  }}
+                >
+                  <Typography variant="caption" sx={{ color: "white" }}>
+                    create
+                  </Typography>
+                </Button>
+              </Link>
               <UserButton
                 appearance={{
                   elements: {
                     userButtonAvatarBox: {
                       //avatar size
-                      width: 20,
-                      height: 20,
+                      width: 35,
+                      height: 35,
                     },
                     userButtonText: {
                       display: "block",
