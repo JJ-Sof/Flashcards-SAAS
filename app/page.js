@@ -356,58 +356,35 @@ export default function LandingPage() {
       </Box>
 
       {/* Payment Options */}
-      <Box height="700px" padding={10}>
-        <Box
+
+      <Box sx={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
           sx={{
-            mb: 15, // Margin-bottom below the heading
-            p: 2,
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            backgroundColor: "#e1e3fc",
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-            transition: "transform 0.3s ease, box-shadow 0.3s ease",
-            "&:hover": {
-              transform: "scale(1.05)",
-              boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
-            },
+            fontFamily: "Roboto, sans-serif",
+            fontWeight: "bold",
+            color: "#1a1d27",
+            textAlign: "center",
+            mb: 5,
           }}
         >
-          <Typography
-            variant="h5"
-            component="h1"
-            gutterBottom
-            sx={{
-              fontFamily: "Roboto, sans-serif",
-              fontWeight: "bold",
-              color: "#1a1d27",
-              letterSpacing: "0.5px",
-              lineHeight: "1.2",
-              textTransform: "uppercase",
-              textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
-              mb: 1, // Margin-bottom
-              textAlign: "center",
-              transition: "color 0.3s ease, text-shadow 0.3s ease",
-              "&:hover": {
-                color: "#0d47a1",
-                textShadow: "2px 2px 8px rgba(0, 0, 0, 0.3)",
-              },
-            }}
-          >
-            Plans
-          </Typography>
-        </Box>
-        <Grid container spacing={3} my={4}>
-          <Grid item xs={12} md={6}>
+          Choose Your Plan
+        </Typography>
+        <Grid container spacing={4} justifyContent="center">
+          {/* Free Trial Plan */}
+          <Grid item xs={12} md={5}>
             <Box
-              height="300px"
-              bgcolor="#2B2E3A"
+              bgcolor="#f4f4f9"
               display="flex"
               flexDirection="column"
-              justifyContent="flex-start" // Align items to the top
+              justifyContent="space-between"
               alignItems="center"
               borderRadius={2}
               boxShadow={3}
-              p={3}
+              p={4}
+              height="400px"
               sx={{
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 "&:hover": {
@@ -417,51 +394,46 @@ export default function LandingPage() {
               }}
             >
               <Typography
-                variant="h6"
-                gutterBottom
+                variant="h5"
                 sx={{
                   fontFamily: "Poppins, sans-serif",
                   fontWeight: "bold",
-                  color: "#F0F1FA",
-                  letterSpacing: "0.5px",
-                  lineHeight: "1.5",
-                  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
-                  mb: 5,
+                  color: "#1a1d27",
                   textAlign: "center",
+                  mb: 2,
                 }}
               >
-                Plan 1
+                Free Trial
               </Typography>
               <Typography
                 variant="body1"
                 sx={{
                   fontFamily: "Poppins, sans-serif",
-                  fontWeight: "bold",
-                  color: "#F0F1FA",
-                  letterSpacing: "0.5px",
-                  lineHeight: "1.8",
-                  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
+                  color: "#555",
                   textAlign: "center",
-                  p: 2,
+                  mb: 3,
                 }}
               >
-                Tailored to your learning style and preferences, our flashcards
-                cover a wide range of subjects — from mathematics to history,
-                science to language arts.
+                Generate one flashcard set only. Explore our flashcards and see
+                how they can help you with your learning needs.
               </Typography>
+              <Button variant="contained" color="primary" size="large">
+                Get Free Trial
+              </Button>
             </Box>
           </Grid>
-          <Grid item xs={12} md={6}>
+          {/* Premium Plan */}
+          <Grid item xs={12} md={5}>
             <Box
-              height="300px"
               bgcolor="#2B2E3A"
               display="flex"
               flexDirection="column"
-              justifyContent="flex-start"
+              justifyContent="space-between"
               alignItems="center"
               borderRadius={2}
               boxShadow={3}
-              p={3}
+              p={4}
+              height="400px"
               sx={{
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 "&:hover": {
@@ -471,38 +443,43 @@ export default function LandingPage() {
               }}
             >
               <Typography
-                variant="h6"
-                gutterBottom
+                variant="h5"
                 sx={{
                   fontFamily: "Poppins, sans-serif",
                   fontWeight: "bold",
                   color: "#F0F1FA",
-                  letterSpacing: "0.5px",
-                  lineHeight: "1.5",
-                  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
-                  mb: 5,
                   textAlign: "center",
+                  mb: 2,
                 }}
               >
-                Plan 2
+                Premium - $10/month
               </Typography>
               <Typography
                 variant="body1"
                 sx={{
                   fontFamily: "Poppins, sans-serif",
-                  fontWeight: "bold",
                   color: "#F0F1FA",
-                  letterSpacing: "0.5px",
-                  lineHeight: "1.8",
-                  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
                   textAlign: "center",
-                  p: 2,
+                  mb: 3,
                 }}
               >
-                Tailored to your learning style and preferences, our flashcards
-                cover a wide range of subjects — from mathematics to history,
-                science to language arts.
+                Get unlimited access to generate flashcard sets. Perfect for
+                long-term learning and mastering new subjects!
               </Typography>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={handleSubmit}
+                sx={{
+                  backgroundColor: "#f4f4f9",
+                  color: "#2B2E3A", // Set text color to contrast with the background
+                  "&:hover": {
+                    backgroundColor: "#e0e0e0", // Slightly darker shade on hover
+                  },
+                }}
+              >
+                Get Premium
+              </Button>
             </Box>
           </Grid>
         </Grid>
