@@ -8,7 +8,7 @@ import Testimonials from "./components/Testimonials";
 import MeetTheCreators from "./components/MeetTheCreators";
 
 export default function LandingPage() {
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
 
   const handleSubmit = async () => {
     const checkoutSession = await fetch("api/checkout_session", {
@@ -35,7 +35,7 @@ export default function LandingPage() {
   };
 
   const handleGetStarted = () => {
-    router.push("/dashboard"); // Redirect to the dashboard page
+    router.push("/dashboard");
   };
 
   return (
@@ -112,7 +112,12 @@ export default function LandingPage() {
             Join the SmartFlash Revolution!
           </Typography>
           <Box mt={2}>
-            <Button variant="contained" color="primary" size="large">
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={handleGetStarted}
+            >
               Get Started
             </Button>
           </Box>

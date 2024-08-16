@@ -1,5 +1,5 @@
 "use client";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Paper } from "@mui/material";
 import { db } from "@/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useState, useEffect } from "react";
@@ -7,27 +7,30 @@ import { useAuth } from "@clerk/nextjs";
 
 const Dashboard = () => {
   const { userId } = useAuth();
-  console.log(userId);
   const [flashcardSets, setFlashcardSets] = useState([]);
 
   const fetchFlashcardSets = async () => {
     if (!userId) return;
     try {
-      console.log(userId);
-      const collectionRef = collection(db, "flashcardSets");
-      const q = query(collectionRef, where("userId", "==", userId));
-      const querySnapshot = await getDocs(q);
+      const userDocRef = collection(db, "flashcardSets", userId, "sets");
+      const setsSnapshot = await getDocs(userDocRef);
+
       const sets = await Promise.all(
-        querySnapshot.docs.map(async (doc) => {
-          const setData = doc.data();
-          const cardsCollection = collection(
+        setsSnapshot.docs.map(async (setDoc) => {
+          const setData = setDoc.data();
+          const cardsCollectionRef = collection(
             db,
-            `flashcardSets/${doc.id}/cards`
+            "flashcardSets",
+            userId,
+            "sets",
+            setDoc.id,
+            "cards"
           );
-          const cardsSnapshot = await getDocs(cardsCollection);
+          const cardsSnapshot = await getDocs(cardsCollectionRef);
           const cards = cardsSnapshot.docs.map((cardDoc) => cardDoc.data());
+
           return {
-            id: doc.id,
+            id: setDoc.id,
             title: setData.title,
             cards: cards,
           };
@@ -44,60 +47,100 @@ const Dashboard = () => {
   }, [userId]);
 
   return (
-    <Box sx={{ padding: "20px" }}>
-      <Typography variant="h2" sx={{ marginBottom: "20px" }}>
-        Created Flashcard Sets
-      </Typography>
+    <Box sx={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
       <Box
         sx={{
+          padding: "2px",
+          alignItems: "left",
           display: "flex",
-          gap: 3,
-          flexWrap: "wrap",
-          justifyContent: flashcardSets.length ? "flex-start" : "center",
-          alignItems: flashcardSets.length ? "flex-start" : "center",
-          height: flashcardSets.length ? "auto" : "200px",
-          backgroundColor: flashcardSets.length ? "none" : "#f0f0f0",
-          borderRadius: "8px",
-          padding: flashcardSets.length ? "0" : "20px",
+          justifyContent: "space-between",
         }}
       >
-        {flashcardSets.length ? (
-          flashcardSets.map((set) => (
-            <Button
-              key={set.id}
-              variant="outlined"
+        <Typography
+          variant="h2"
+          sx={{
+            fontWeight: "bold",
+            textAlign: "center",
+            fontSize: "2.5rem",
+          }}
+        >
+          Your Flashcard Sets
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{
+            padding: "6px 16px",
+            alignSelf: "center",
+            backgroundColor: "coral",
+          }}
+        >
+          +create
+        </Button>
+      </Box>
+      <Paper
+        elevation={3}
+        sx={{
+          padding: "20px",
+          backgroundColor: "#f9f9f9",
+          borderRadius: "16px",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            gap: 3,
+            flexWrap: "wrap",
+            justifyContent: flashcardSets.length ? "flex-start" : "center",
+            alignItems: flashcardSets.length ? "flex-start" : "center",
+            minHeight: flashcardSets.length ? "auto" : "300px",
+            backgroundColor: flashcardSets.length ? "none" : "#f0f0f0",
+            borderRadius: "8px",
+            padding: flashcardSets.length ? "0" : "20px",
+          }}
+        >
+          {flashcardSets.length ? (
+            flashcardSets.map((set) => (
+              <Paper
+                key={set.id}
+                elevation={6}
+                sx={{
+                  width: "250px",
+                  height: "150px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "#fff",
+                  borderRadius: "12px",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  textTransform: "capitalize",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  transition: "transform 0.2s ease",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                    backgroundColor: "#f1f1f1",
+                  },
+                }}
+              >
+                <Typography variant="h6" sx={{ textAlign: "center" }}>
+                  {set.title}
+                </Typography>
+              </Paper>
+            ))
+          ) : (
+            <Typography
+              variant="h6"
               sx={{
-                width: "200px",
-                height: "100px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#fff",
-                borderRadius: "8px",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                textTransform: "capitalize",
+                color: "#888",
                 fontWeight: "bold",
-                "&:hover": {
-                  backgroundColor: "#f9f9f9",
-                },
+                textAlign: "center",
               }}
             >
-              {set.title}
-            </Button>
-          ))
-        ) : (
-          <Typography
-            variant="h6"
-            sx={{
-              color: "#888",
-              fontWeight: "bold",
-              textAlign: "center",
-            }}
-          >
-            Empty
-          </Typography>
-        )}
-      </Box>
+              Create your Flashcard set to see them here!
+            </Typography>
+          )}
+        </Box>
+      </Paper>
     </Box>
   );
 };
