@@ -35,45 +35,20 @@ const MeetTheCreators = () => {
         mx: "auto", // Center the box
       }}
     >
-      <Box
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
         sx={{
-          mb: 15,
-          p: 2,
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-          backgroundColor: "#e1e3fc",
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-          transition: "transform 0.3s ease, box-shadow 0.3s ease",
-          "&:hover": {
-            transform: "scale(1.05)",
-            boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
-          },
+          fontFamily: "Roboto, sans-serif",
+          fontWeight: "bold",
+          color: "#1a1d27",
+          textAlign: "center",
+          mb: 10,
         }}
       >
-        <Typography
-          variant="h5"
-          component="h1"
-          gutterBottom
-          sx={{
-            fontFamily: "Roboto, sans-serif",
-            fontWeight: "bold",
-            color: "#1a1d27",
-            letterSpacing: "0.5px",
-            lineHeight: "1.2",
-            textTransform: "uppercase",
-            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
-            mb: 3,
-            textAlign: "center",
-            transition: "color 0.3s ease, text-shadow 0.3s ease",
-            "&:hover": {
-              color: "#0d47a1",
-              textShadow: "2px 2px 8px rgba(0, 0, 0, 0.3)",
-            },
-          }}
-        >
-          Meet the Creators!
-        </Typography>
-      </Box>
+        Meet The Creators!
+      </Typography>
 
       <Grid container spacing={6} justifyContent="center">
         {creators.map((creator) => (

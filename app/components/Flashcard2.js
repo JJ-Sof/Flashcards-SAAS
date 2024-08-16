@@ -1,11 +1,11 @@
 "use client";
-import { BorderAllOutlined } from "@mui/icons-material";
-import { Box, Card, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { Card, Typography } from "@mui/material";
 import ReactCardFlip from "react-card-flip";
 
-const Flashcard = ({ cardObj }) => {
+const Flashcard2 = ({ cardObj }) => {
   const [isFlipped, setIsFlipped] = useState(false);
+
   const handleFlip = (e) => {
     e.preventDefault();
     setIsFlipped(!isFlipped);
@@ -13,20 +13,21 @@ const Flashcard = ({ cardObj }) => {
 
   const cardStyle = {
     padding: "30px",
-    height: "200px", // Set a fixed height
-    width: "300px", // Set a fixed width
+    height: "400px",
+    width: "700px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    textAlign: "center", // Center text inside the card
+    textAlign: "center",
     flexDirection: "column",
-    // border: '2px dashed black',
   };
+
+  if (!cardObj) return null; // Handle case when cardObj is not passed
 
   return (
     <ReactCardFlip isFlipped={isFlipped}>
       <Card sx={cardStyle} elevation={20} onClick={handleFlip}>
-        <Typography flex={1} variant="h6" fontWeight={"bold"}>
+        <Typography variant="h6" fontWeight={"bold"}>
           {cardObj.front}
         </Typography>
         <Typography fontSize={12} fontWeight={"light"}>
@@ -34,9 +35,7 @@ const Flashcard = ({ cardObj }) => {
         </Typography>
       </Card>
       <Card sx={cardStyle} elevation={20} onClick={handleFlip}>
-        <Typography flex={1} variant="h7">
-          {cardObj.back}
-        </Typography>
+        <Typography variant="h6">{cardObj.back}</Typography>
         <Typography fontSize={12} fontWeight={"light"}>
           [Back]
         </Typography>
@@ -45,4 +44,4 @@ const Flashcard = ({ cardObj }) => {
   );
 };
 
-export default Flashcard;
+export default Flashcard2;

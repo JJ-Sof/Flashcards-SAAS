@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
+import Image from "next/image";
 
 export default function Header() {
   return (
@@ -23,17 +24,13 @@ export default function Header() {
         >
           {/* Logo Section */}
           <Box>
-            <Typography
-              variant="h6"
-              component="div" // acts like a block element
-              sx={{
-                fontWeight: "bold",
-                fontSize: "20px",
-                color: "#F0F1FA",
-              }}
-            >
-              ◆SmartFlash
-            </Typography>
+            <Image
+              src="/smartflash01.ico"
+              alt="SmartFlash Logo"
+              width={40}
+              height={40}
+              // padding={0}
+            />
           </Box>
           {/* Authentication Buttons */}
           <Box display="flex" alignItems="center" gap={1}>

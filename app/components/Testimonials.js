@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Typography, IconButton, Grid } from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -36,17 +36,20 @@ const testimonials = [
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDarkBg, setIsDarkBg] = useState(true); // Track the background color
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
     );
+    setIsDarkBg(!isDarkBg); // Toggle background color
   };
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
     );
+    setIsDarkBg(!isDarkBg); // Toggle background color
   };
 
   return (
@@ -59,64 +62,41 @@ export default function Testimonials() {
         mx: "auto", // Center the box
       }}
     >
-      <Box
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
         sx={{
-          mb: 15,
-          p: 2,
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-          backgroundColor: "#e1e3fc",
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-          transition: "transform 0.3s ease, box-shadow 0.3s ease",
-          "&:hover": {
-            transform: "scale(1.05)",
-            boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
-          },
+          mb: 8,
+          textAlign: "center",
+          fontFamily: "Roboto, sans-serif",
+          fontWeight: "bold",
+          color: "#1a1d27",
         }}
       >
-        <Typography
-          variant="h5"
-          component="h1"
-          gutterBottom
-          sx={{
-            fontFamily: "Roboto, sans-serif",
-            fontWeight: "bold",
-            color: "#1a1d27",
-            letterSpacing: "0.5px",
-            lineHeight: "1.2",
-            textTransform: "uppercase",
-            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
-            mb: 1,
-            textAlign: "center",
-            transition: "color 0.3s ease, text-shadow 0.3s ease",
-            "&:hover": {
-              color: "#0d47a1",
-              textShadow: "2px 2px 8px rgba(0, 0, 0, 0.3)",
-            },
-          }}
-        >
-          Testimonials
-        </Typography>
-      </Box>
+        Testimonials
+      </Typography>
 
       <Box
         sx={{
           position: "relative",
-          bgcolor: "#2B2E3A",
+          padding: 15,
+          bgcolor: isDarkBg ? "#2B2E3A" : "#f4f4f9",
           width: "100%",
-          maxWidth: "600px",
+          maxWidth: "700px",
           mx: "auto",
           overflow: "hidden",
           borderRadius: 2,
           boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
           height: "300px",
+          transition: "none", // Disable transition
         }}
       >
         <IconButton
           onClick={handlePrev}
           sx={{
             position: "absolute",
-            left: 0,
+            left: 20,
             top: "50%",
             transform: "translateY(-50%)",
             zIndex: 1,
@@ -125,6 +105,7 @@ export default function Testimonials() {
               backgroundColor: "#4A4F57",
             },
             color: "#F0F1FA",
+            transition: "none", // Disable transition
           }}
         >
           <ArrowBackIosIcon />
@@ -140,7 +121,7 @@ export default function Testimonials() {
           }}
         >
           <Box
-            bgcolor="#2B2E3A"
+            bgcolor={isDarkBg ? "#2B2E3A" : "#f4f4f9"}
             p={2}
             borderRadius={2}
             width="100%"
@@ -150,6 +131,7 @@ export default function Testimonials() {
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
+              transition: "none", // Disable transition
             }}
           >
             <Typography
@@ -157,13 +139,16 @@ export default function Testimonials() {
               sx={{
                 fontFamily: "Poppins, sans-serif",
                 fontWeight: "bold",
-                color: "#F0F1FA",
+                color: isDarkBg ? "#F0F1FA" : "#1a1d27",
                 letterSpacing: "0.5px",
                 lineHeight: "1.8",
-                textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
+                textShadow: isDarkBg
+                  ? "2px 2px 4px rgba(0, 0, 0, 0.2)"
+                  : "none",
                 textAlign: "center",
                 p: 2,
                 mb: 1,
+                transition: "none", // Disable transition
               }}
             >
               {testimonials[currentIndex].text}
@@ -173,11 +158,14 @@ export default function Testimonials() {
               sx={{
                 fontFamily: "Poppins, sans-serif",
                 fontWeight: "bold",
-                color: "#FFD700",
+                color: isDarkBg ? "#F0F1FA" : "#1a1d27", // Same color as the review text
                 letterSpacing: "0.5px",
                 lineHeight: "1.5",
-                textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
+                textShadow: isDarkBg
+                  ? "2px 2px 4px rgba(0, 0, 0, 0.2)"
+                  : "none",
                 textAlign: "center",
+                transition: "none", // Disable transition
               }}
             >
               - {testimonials[currentIndex].name}
@@ -192,6 +180,7 @@ export default function Testimonials() {
                         ? "#FFD700"
                         : "#555",
                     fontSize: "1.5rem",
+                    transition: "none", // Disable transition
                   }}
                 />
               ))}
@@ -203,7 +192,7 @@ export default function Testimonials() {
           onClick={handleNext}
           sx={{
             position: "absolute",
-            right: 0,
+            right: 20,
             top: "50%",
             transform: "translateY(-50%)",
             zIndex: 1,
@@ -212,6 +201,7 @@ export default function Testimonials() {
               backgroundColor: "#4A4F57",
             },
             color: "#F0F1FA",
+            transition: "none", // Disable transition
           }}
         >
           <ArrowForwardIosIcon />
