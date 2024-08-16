@@ -12,9 +12,9 @@ const creators = [
   },
   {
     id: 2,
-    name: "Creator 2",
-    imageSrc: "/creator1.jpg",
-    linkedinUrl: "https://linkedin.com/in/creator2",
+    name: "Abdelrahman Hany",
+    imageSrc: "/abdu.jpg",
+    linkedinUrl: "https://www.linkedin.com/in/abduhany/",
   },
   {
     id: 3,
