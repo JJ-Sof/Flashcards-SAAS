@@ -1,5 +1,5 @@
 "use client";
-import { Box, Typography, Button, Paper, IconButton } from "@mui/material";
+import { Box, Typography, Button, Paper, IconButton, Container, CircularProgress } from "@mui/material";
 import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -10,6 +10,7 @@ import HomeIcon from "@mui/icons-material/Home";
 const Dashboard = () => {
   const { userId } = useAuth();
   const [flashcardSets, setFlashcardSets] = useState([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   const fetchFlashcardSets = async () => {
@@ -40,6 +41,7 @@ const Dashboard = () => {
         })
       );
       setFlashcardSets(sets);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching flashcard sets:", error);
     }
@@ -113,7 +115,7 @@ const Dashboard = () => {
             padding: flashcardSets.length ? "0" : "20px",
           }}
         >
-          {flashcardSets.length ? (
+          {loading ? <Box><CircularProgress /></Box> : flashcardSets.length ? (
             flashcardSets.map((set) => (
               <Paper
                 key={set.id}

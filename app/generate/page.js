@@ -1,12 +1,10 @@
 'use client'
 import { ArrowBack } from '@mui/icons-material'
-import { Box, Button, Card, Container, Grid, IconButton, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, IconButton, TextField, Typography } from '@mui/material'
 import Flashcard from 'app/components/Flashcard'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@clerk/nextjs'
-import { collection, doc, getDoc, getDocs, writeBatch } from 'firebase/firestore'
-import { db } from '../../firebase'
 import SaveModal from '../components/SaveModal'
 import { Bounce, toast } from 'react-toastify'
 
