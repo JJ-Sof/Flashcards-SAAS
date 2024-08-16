@@ -1,35 +1,19 @@
 "use client";
 import { ArrowBack } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Card,
-  Container,
-  Grid,
-  IconButton,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 import Flashcard from "app/components/Flashcard";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  writeBatch,
-} from "firebase/firestore";
-import { db } from "../../firebase";
 import SaveModal from "../components/SaveModal";
+import { Bounce, toast } from "react-toastify";
 
 const page = () => {
   const { userId } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    // Perform any necessary redirects or navigation here
     if (!userId) {
       router.push("/");
     }
@@ -41,18 +25,49 @@ const page = () => {
   const [buttonText, setButtonText] = useState("✨Generate✨");
 
   const handleGenerate = async () => {
-    const response = await fetch("/api/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    if (prompt.length === 0) {
+      toast.error("Please enter a prompt", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+      return;
+    }
+    const toastId = toast.promise(
+      new Promise(async (resolve, reject) => {
+        try {
+          const response = await fetch("/api/generate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ prompt }),
+          });
+          const data = await response.json();
+          setCardSet(data);
+          setButtonText("✨Generate Again✨");
+          setPrompt("");
+          resolve(data);
+        } catch (error) {
+          reject(error);
+        }
+      }),
+      {
+        pending: "Generating new set...",
+        success: "Generated successfully",
+        error: "Failed to generate",
       },
-      body: JSON.stringify({ prompt }),
-    });
-    const data = await response.json();
-    setCardSet(data);
-    setButtonText("✨Generate Again✨");
-    setPrompt("");
-    console.log(data);
+      {
+        position: "top-center",
+        theme: "dark",
+      }
+    );
   };
 
   return (
@@ -76,7 +91,7 @@ const page = () => {
       >
         <IconButton
           onClick={() => {
-            router.back();
+            router.replace("/dashboard");
           }}
         >
           <ArrowBack />
