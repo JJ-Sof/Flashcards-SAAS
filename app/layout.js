@@ -5,6 +5,8 @@ import Header from "./components/Header";
 import MuiThemeProvider from "./theme";
 import Footer from "./components/Footer";
 import { Box, CssBaseline } from "@mui/material";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +20,7 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
+          <ToastContainer />
           <MuiThemeProvider>
             <CssBaseline />
             <Box display="flex" flexDirection="column" minHeight="100vh">

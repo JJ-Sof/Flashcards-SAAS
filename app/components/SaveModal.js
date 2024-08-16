@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
 import { collection, doc, getDocs, query, where, writeBatch } from 'firebase/firestore';
 import { db } from '@/firebase';
+import { Bounce, toast } from 'react-toastify';
 
 const style = {
     position: 'absolute',
@@ -33,40 +34,68 @@ const SaveModal = ({ cardSet, userId }) => {
     // Still WIP
     const handleSaveSet = async () => {
         if (!userId || !cardSetName || cardSetName.length === 0 || cardSet.length === 0) {
-            alert('Please enter a name')
+            toast.error('Please enter a name', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+            });
             return
         }
 
-        try {
-            const userDocRef = collection(db, "flashcardSets", userId, "sets")
+        const toastID = toast.promise(
+            new Promise(async (resolve, reject) => {
+                try {
+                    const userDocRef = collection(db, "flashcardSets", userId, "sets")
 
-            // Query to check if a set with the same title already exists
-            const existingSetQuery = query(userDocRef, where("title", "==", cardSetName));
-            const querySnapshot = await getDocs(existingSetQuery);
+                    // Query to check if a set with the same title already exists
+                    const existingSetQuery = query(userDocRef, where("title", "==", cardSetName));
+                    const querySnapshot = await getDocs(existingSetQuery);
 
-            if (!querySnapshot.empty) {
-                alert("A flashcard set with this title already exists. Please choose a different title.");
-                return;
+                    if (!querySnapshot.empty) {
+                        return reject({ message: "Set with the same name already exists" })
+                    }
+
+                    const newSetDocRef = doc(userDocRef)
+
+                    const batch = writeBatch(db)
+
+                    batch.set(newSetDocRef, { title: cardSetName })
+
+                    cardSet.forEach((card, index) => {
+                        const newCardDocRef = doc(newSetDocRef, "cards", `card${index + 1}`)
+                        batch.set(newCardDocRef, card)
+                    })
+
+                    await batch.commit()
+                    console.log("Flashcard set saved successfully")
+                    setCardSetName("")
+                    handleClose()
+                    resolve()
+                } catch (e) {
+                    reject({ message: `Error saving flashcard set: ${e}` })
+                }
+            }),
+            {
+                pending: "Saving flashcard set...",
+                success: "Flashcard set saved successfully",
+                error: {
+                    render({ data }) {
+                        // Display a custom message based on the error type
+                        return data.message
+                    }
+                }
+            },
+            {
+                position: 'top-center',
+                theme: 'dark',
             }
-
-            const newSetDocRef = doc(userDocRef)
-
-            const batch = writeBatch(db)
-
-            batch.set(newSetDocRef, { title: cardSetName })
-
-            cardSet.forEach((card, index) => {
-                const newCardDocRef = doc(newSetDocRef, "cards", `card${index + 1}`)
-                batch.set(newCardDocRef, card)
-            })
-
-            await batch.commit()
-            console.log("Flashcard set saved successfully")
-            setCardSetName("")
-            handleClose()
-        } catch (e) {
-            console.error("Error saving flashcard set:", e)
-        }
+        )
     }
 
     return (

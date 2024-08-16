@@ -8,6 +8,7 @@ import { useAuth } from '@clerk/nextjs'
 import { collection, doc, getDoc, getDocs, writeBatch } from 'firebase/firestore'
 import { db } from '../../firebase'
 import SaveModal from '../components/SaveModal'
+import { Bounce, toast } from 'react-toastify'
 
 const page = () => {
 
@@ -27,18 +28,50 @@ const page = () => {
     const [buttonText, setButtonText] = useState('✨Generate✨')
 
     const handleGenerate = async () => {
-        const response = await fetch("/api/generate", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
+        if (prompt.length === 0) {
+            toast.error('Please enter a prompt', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+            });
+            return
+        }
+        const toastId = toast.promise(
+            new Promise(async (resolve, reject) => {
+                try {
+                    const response = await fetch("/api/generate", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ prompt }),
+                    })
+                    const data = await response.json()
+                    setCardSet(data)
+                    setButtonText('✨Generate Again✨')
+                    setPrompt('')
+                    resolve(data)
+                } catch (error) {
+                    reject(error)
+                }
+            }),
+            {
+                pending: 'Generating new set...',
+                success: 'Generated successfully',
+                error: 'Failed to generate',
             },
-            body: JSON.stringify({ prompt }),
-        })
-        const data = await response.json()
-        setCardSet(data)
-        setButtonText('✨Generate Again✨')
-        setPrompt("")
-        console.log(data)
+            {
+                position: "top-center",
+                theme: "dark",
+            }
+
+        )
     }
 
     return (
@@ -59,7 +92,7 @@ const page = () => {
                     justifyContent: "center",
                     alignItems: "center",
                 }}>
-                <IconButton onClick={() => { router.back() }}>
+                <IconButton onClick={() => { router.replace('/dashboard') }}>
                     <ArrowBack />
                 </IconButton>
                 <Typography
