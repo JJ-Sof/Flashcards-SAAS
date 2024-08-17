@@ -1,40 +1,98 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import getStripe from "utils/get-stripe";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import Testimonials from "./components/Testimonials";
 import MeetTheCreators from "./components/MeetTheCreators";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/firebase";
+import { useAuth, useClerk } from "@clerk/nextjs";
 
 export default function LandingPage() {
   const router = useRouter();
+  const { userId } = useAuth();
+  const { openSignIn } = useClerk();
+
+  useEffect(() => {
+    const checkAndCreateUser = async () => {
+      if (!userId) {
+        console.log("No userId provided.");
+        return;
+      }
+
+      try {
+        console.log(`Checking document for userId: ${userId}`);
+
+        const userDocRef = doc(db, "users", userId);
+        const docSnap = await getDoc(userDocRef);
+
+        if (docSnap.exists()) {
+          console.log(`Document for userId: ${userId} already exists.`);
+        } else {
+          console.log(
+            `Document for userId: ${userId} does not exist. Creating document.`
+          );
+          await setDoc(userDocRef, {
+            subscribed: false,
+            credits: 2,
+          });
+          console.log(
+            `Document for userId: ${userId} created with subscribed: false and credits: 2.`
+          );
+        }
+      } catch (error) {
+        console.error("Error checking or creating user", error);
+      }
+    };
+
+    checkAndCreateUser();
+  }, [userId]);
 
   const handleSubmit = async () => {
-    const checkoutSession = await fetch("api/checkout_session", {
-      method: "POST",
-      headers: {
-        origin: "http/localhost:3000",
-      },
-    });
-    const checkoutSessionJson = await checkoutSession.json();
-
-    if (checkoutSession.statusCode === 500) {
-      console.error(checkoutSession.message);
+    if (!userId) {
+      openSignIn();
       return;
     }
 
-    const stripe = await getStripe();
-    const { error } = await stripe.redirectToCheckout({
-      sessionId: checkoutSessionJson.id,
-    });
+    try {
+      const response = await fetch("/api/checkout_session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }),
+      });
+      const checkoutSessionJson = await response.json();
 
-    if (error) {
-      console.warn(error.message);
+      if (response.status !== 200) {
+        console.error(
+          "Error creating checkout session:",
+          checkoutSessionJson.error.message
+        );
+        return;
+      }
+
+      const stripe = await getStripe();
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: checkoutSessionJson.id,
+      });
+
+      if (error) {
+        console.warn("Error redirecting to checkout:", error.message);
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error.message);
     }
   };
 
-  const handleGetStarted = () => {
+  const handleGetStarted = async () => {
+    if (!userId) {
+      openSignIn();
+      return;
+    }
+
     router.push("/dashboard");
   };
 

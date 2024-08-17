@@ -1,5 +1,8 @@
+// api/checkout_session.js
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { db } from "@/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -13,9 +16,18 @@ export async function GET(req) {
 
   try {
     const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
+
+    const clerkUserId = checkoutSession.metadata.clerkUserId;
+    const paymentStatus = checkoutSession.payment_status;
+
+    if (clerkUserId && paymentStatus === "paid") {
+      const userDocRef = doc(db, "users", clerkUserId);
+      await updateDoc(userDocRef, { subscribed: true });
+    }
+
     return NextResponse.json(checkoutSession);
   } catch (error) {
-    console.error("error retreiving session checkout: ", error);
+    console.error("Error retrieving session checkout:", error);
     return NextResponse.json(
       { error: { message: error.message } },
       { status: 500 }
@@ -24,6 +36,14 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
+  const { userId } = await req.json();
+  if (!userId) {
+    return NextResponse.json(
+      { error: { message: "User ID is required" } },
+      { status: 400 }
+    );
+  }
+
   const params = {
     mode: "subscription",
     payment_method_types: ["card"],
@@ -49,10 +69,23 @@ export async function POST(req) {
     cancel_url: `${req.headers.get(
       "origin"
     )}/result?session_id={CHECKOUT_SESSION_ID}`,
+    metadata: {
+      clerkUserId: userId,
+    },
   };
-  const checkoutSession = await stripe.checkout.sessions.create(params);
 
-  return NextResponse.json(checkoutSession, {
-    status: 200,
-  });
+  try {
+    const checkoutSession = await stripe.checkout.sessions.create(params);
+
+    const userDocRef = doc(db, "users", userId);
+    await updateDoc(userDocRef, { subscribed: false });
+
+    return NextResponse.json(checkoutSession, { status: 200 });
+  } catch (error) {
+    console.error("Error creating checkout session:", error);
+    return NextResponse.json(
+      { error: { message: error.message } },
+      { status: 500 }
+    );
+  }
 }

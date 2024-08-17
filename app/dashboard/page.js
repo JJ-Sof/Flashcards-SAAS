@@ -1,5 +1,13 @@
 "use client";
-import { Box, Typography, Button, Paper, IconButton, Container, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Paper,
+  IconButton,
+  Container,
+  CircularProgress,
+} from "@mui/material";
 import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -59,7 +67,7 @@ const Dashboard = () => {
     <Box sx={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
       <IconButton
         onClick={() => {
-          router.push("/"); // Redirects to the home page
+          router.push("/");
         }}
       >
         <HomeIcon />
@@ -115,7 +123,11 @@ const Dashboard = () => {
             padding: flashcardSets.length ? "0" : "20px",
           }}
         >
-          {loading ? <Box><CircularProgress /></Box> : flashcardSets.length ? (
+          {loading ? (
+            <Box>
+              <CircularProgress />
+            </Box>
+          ) : flashcardSets.length ? (
             flashcardSets.map((set) => (
               <Paper
                 key={set.id}

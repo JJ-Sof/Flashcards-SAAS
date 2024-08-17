@@ -71,7 +71,7 @@ const ResultPage = () => {
         variant="container"
         padding="8px 16px"
         onClick={() => {
-          router.push("/"); // Redirects to the home page
+          router.push("/");
         }}
         sx={{
           mb: 2,
