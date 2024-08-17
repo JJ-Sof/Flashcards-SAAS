@@ -33,6 +33,7 @@ const Flashcard = ({ cardObj }) => {
           [Front]
         </Typography>
       </Card>
+
       <Card sx={cardStyle} elevation={20} onClick={handleFlip}>
         <Typography flex={1} variant="h7">
           {cardObj.back}

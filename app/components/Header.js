@@ -24,14 +24,16 @@ export default function Header() {
         >
           {/* Logo Section */}
           <Box>
-            <Image
-              src="/smartflash01.ico"
-              alt="SmartFlash Logo"
-              width={40}
-              height={40}
-              // padding={0}
-            />
+            <Link href="/">
+              <Image
+                src="/White_Logo.png"
+                alt="SmartFlash Logo"
+                width={40}
+                height={40}
+              />
+            </Link>
           </Box>
+
           {/* Authentication Buttons */}
           <Box display="flex" alignItems="center" gap={1}>
             <SignedOut>

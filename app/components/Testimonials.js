@@ -63,13 +63,13 @@ export default function Testimonials() {
       }}
     >
       <Typography
-        variant="h4"
+        variant="h3"
         component="h1"
         gutterBottom
         sx={{
           mb: 8,
           textAlign: "center",
-          fontFamily: "Roboto, sans-serif",
+          fontFamily: "Quilon-Regular",
           fontWeight: "bold",
           color: "#1a1d27",
         }}

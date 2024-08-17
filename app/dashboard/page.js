@@ -82,6 +82,7 @@ const Dashboard = () => {
           alignItems: "left",
           display: "flex",
           justifyContent: "space-between",
+          mb: 4,
         }}
       >
         <Typography
@@ -89,7 +90,7 @@ const Dashboard = () => {
           sx={{
             fontWeight: "bold",
             textAlign: "center",
-            fontSize: "2.5rem",
+            fontSize: "2rem",
           }}
         >
           Your Flashcard Sets
@@ -134,7 +135,9 @@ const Dashboard = () => {
           ) : flashcardSets.length ? (
             flashcardSets.map((set) => (
               <Paper
-                onClick={() => { router.push(`/viewsets?title=${set.title}`) }}
+                onClick={() => {
+                  router.push(`/viewsets?title=${set.title}`);
+                }}
                 key={set.id}
                 elevation={6}
                 sx={{

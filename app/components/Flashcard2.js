@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Card, Typography } from "@mui/material";
+import { Box, Card, Typography } from "@mui/material";
 import ReactCardFlip from "react-card-flip";
 
 const Flashcard2 = ({ cardObj }) => {

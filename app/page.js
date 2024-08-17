@@ -9,6 +9,7 @@ import MeetTheCreators from "./components/MeetTheCreators";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useAuth, useClerk } from "@clerk/nextjs";
+import GradientButton from "react-linear-gradient-button";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -97,26 +98,49 @@ export default function LandingPage() {
   };
 
   return (
-    <Container maxWidth="lg">
+    // <Container maxWidth="lg">
+    <Box>
       {/* Hero Section */}
       <Box
-        height="650px"
+        height="680px"
         bgcolor="#e1e3fc"
         display="flex"
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
         my={4}
-        borderRadius={2}
+        // borderRadius={2}
         textAlign="center"
         padding={15}
+        sx={{
+          backgroundImage: "url(/GIF8.gif)",
+          backgroundSize: "cover", // Adjust as needed
+          backgroundPosition: "center", // Adjust as needed
+          backgroundRepeat: "repeat", // Adjust as needed
+          margin: 0,
+          padding: 0,
+        }}
       >
-        <Image
-          src="/smartflash3.ico"
-          alt="SmartFlash Logo"
-          width={450}
-          height={450}
-        />
+        <Box display="flex" alignItems="center" mb={5}>
+          <Image
+            src="/White_Logo.png"
+            alt="SmartFlash Logo"
+            width={300}
+            height={300}
+          />
+          <Typography
+            variant="h1"
+            sx={{
+              fontFamily: "Quilon-Semibold",
+              fontWeight: 600,
+              // color: "#000000",
+              color: "#ffffff",
+              ml: -12,
+            }}
+          >
+            SmartFlash
+          </Typography>
+        </Box>
         <Typography
           variant="h5"
           component="p"
@@ -124,43 +148,27 @@ export default function LandingPage() {
           sx={{
             fontFamily: "Poppins, sans-serif",
             fontWeight: "bold",
-            color: "#2B2E3A",
+            // color: "#2B2E3A",
+            color: "#ffffff",
             letterSpacing: "0.5px",
             lineHeight: "1.2",
             // textTransform: "uppercase",
-            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
-            mb: 4, // Margin-bottom
+            // textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
+            mb: 1, // Margin-bottom
           }}
         >
           Flash Forward to Smarter Learning!
         </Typography>
 
-        {/* <Typography
-          variant="h2"
-          component="h1"
-          gutterBottom
-          sx={{
-            fontFamily: "Roboto, sans-serif",
-            fontWeight: "bold",
-            color: "#1a1d27",
-            letterSpacing: "0.5px",
-            lineHeight: "1.2",
-            textTransform: "uppercase",
-            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
-            mb: 5, // Margin-bottom
-          }}
-        >
-          Flash Forward to Smarter Learning!
-        </Typography> */}
-
-        {/* <Typography
+        <Typography
           variant="body1"
           component="p"
           gutterBottom
           sx={{
             fontFamily: "Poppins, sans-serif",
             // fontWeight: "bold",
-            color: "#2B2E3A",
+            // color: "#2B2E3A",
+            color: "#ffffff",
             letterSpacing: "0.5px",
             lineHeight: "1.2",
             // textTransform: "uppercase",
@@ -170,55 +178,48 @@ export default function LandingPage() {
         >
           Ready to level up your knowledge game? Dive into SmartFlash Studio
           today. Remember, the coolest minds flash forward!
-        </Typography> */}
+        </Typography>
         <Box mt={2}>
           {/* <Typography variant="body1" component="p" gutterBottom>
             Join the SmartFlash Revolution!
           </Typography> */}
           <Box mt={2}>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={handleGetStarted}
+            <GradientButton
+              gradient={["#f00b47", "#0f6bb6"]} // Custom gradient colors
+              angle="45deg" // Custom angle
+              padding={20} // Custom padding
+              borderRadius={12} // Custom border radius
+              color="#ffffff" // Text color
+              fontSize={20} // Font size
+              background="linear-gradient(45deg, #f00b47, #0f6bb6)"
+              onClick={handleGetStarted} // Add your click handler
+              style={{
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+                e.currentTarget.style.boxShadow =
+                  "6px 6px 12px rgba(0, 0, 0, 0.3)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
             >
               Get Started
-            </Button>
+            </GradientButton>
           </Box>
         </Box>
-      </Box>
-
-      {/* Flashcard Demo */}
-      <Box
-        height="600px"
-        bgcolor="#E4E6EF"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        my={8}
-        borderRadius={2}
-        overflow="hidden" // Ensures iframe doesn't overflow
-        mb={8}
-      >
-        <iframe
-          width="100%"
-          height="100%"
-          src="https://www.youtube.com/embed/1SBxsv_T_Jw?controls=0&loop=1&playlist=1SBxsv_T_Jw&modestbranding=1&playsinline=1&autoplay=1"
-          title="Flashcard Demo"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
       </Box>
 
       {/* features */}
       <Box height="800px" padding={10}>
         <Typography
-          variant="h4"
+          variant="h3"
           component="h1"
           gutterBottom
           sx={{
-            fontFamily: "Roboto, sans-serif",
+            fontFamily: "Quilon-Regular",
             fontWeight: "bold",
             color: "#1a1d27",
             textAlign: "center",
@@ -414,6 +415,31 @@ export default function LandingPage() {
         </Grid>
       </Box>
 
+      <Container maxWidth="lg" sx={{ my: 8 }}>
+        {/* Flashcard Demo */}
+        <Box
+          height="600px"
+          bgcolor="#E4E6EF"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          my={8}
+          borderRadius={2}
+          overflow="hidden" // Ensures iframe doesn't overflow
+          mb={10}
+        >
+          <iframe
+            width="100%"
+            height="100%"
+            src="https://www.youtube.com/embed/1SBxsv_T_Jw?controls=0&loop=1&playlist=1SBxsv_T_Jw&modestbranding=1&playsinline=1&autoplay=1"
+            title="Flashcard Demo"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </Box>
+      </Container>
+
       {/* Payment Options */}
 
       <Box
@@ -425,11 +451,11 @@ export default function LandingPage() {
         }}
       >
         <Typography
-          variant="h4"
+          variant="h3"
           component="h1"
           gutterBottom
           sx={{
-            fontFamily: "Roboto, sans-serif",
+            fontFamily: "Quilon-Regular",
             fontWeight: "bold",
             color: "#1a1d27",
             textAlign: "center",
@@ -560,6 +586,7 @@ export default function LandingPage() {
       <Box height="600px" padding={5}>
         <MeetTheCreators />
       </Box>
-    </Container>
+      {/* </Container> */}
+    </Box>
   );
 }
