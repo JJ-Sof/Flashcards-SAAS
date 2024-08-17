@@ -48,7 +48,11 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    let isMounted = true;
     fetchFlashcardSets();
+    return () => {
+      isMounted = false; // Set to false on cleanup
+    };
   }, [userId]);
 
   const handleCreate = () => {
@@ -118,6 +122,7 @@ const Dashboard = () => {
           {loading ? <Box><CircularProgress /></Box> : flashcardSets.length ? (
             flashcardSets.map((set) => (
               <Paper
+                onClick={() => { router.push(`/viewsets?title=${set.title}`) }}
                 key={set.id}
                 elevation={6}
                 sx={{
