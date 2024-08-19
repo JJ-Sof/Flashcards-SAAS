@@ -113,7 +113,7 @@ export default function LandingPage() {
         textAlign="center"
         padding={15}
         sx={{
-          backgroundImage: "url(/GIF8.gif)",
+          backgroundImage: "url(/bg3.jpg)",
           backgroundSize: "cover", // Adjust as needed
           backgroundPosition: "center", // Adjust as needed
           backgroundRepeat: "repeat", // Adjust as needed
@@ -133,9 +133,10 @@ export default function LandingPage() {
             sx={{
               fontFamily: "Quilon-Semibold",
               fontWeight: 600,
-              // color: "#000000",
               color: "#ffffff",
-              ml: -12,
+              ml: { xs: 0, md: -12 }, // Remove or adjust the margin-left for smaller screens
+              fontSize: { xs: "2rem", sm: "3rem", md: "4rem", lg: "5rem" }, // Adjust font size based on screen size
+              textAlign: { xs: "center", md: "left" }, // Center text on small screens
             }}
           >
             SmartFlash
@@ -431,7 +432,7 @@ export default function LandingPage() {
           <iframe
             width="100%"
             height="100%"
-            src="https://www.youtube.com/embed/1SBxsv_T_Jw?controls=0&loop=1&playlist=1SBxsv_T_Jw&modestbranding=1&playsinline=1&autoplay=1"
+            src="https://www.youtube.com/embed/NzLUm9iqMd4?controls=0&modestbranding=1&playsinline=1&autoplay=1&loop=1&playlist=NzLUm9iqMd4"
             title="Flashcard Demo"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -509,7 +510,12 @@ export default function LandingPage() {
                 Generate one flashcard set only. Explore our flashcards and see
                 how they can help you with your learning needs.
               </Typography>
-              <Button variant="contained" color="primary" size="large">
+              <Button
+                onClick={handleGetStarted}
+                variant="contained"
+                color="primary"
+                size="large"
+              >
                 Get Free Trial
               </Button>
             </Box>
