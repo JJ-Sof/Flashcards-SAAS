@@ -36,7 +36,7 @@ export default function LandingPage() {
         if (docSnap.exists()) {
           const data = docSnap.data();
           console.log(`Document for userId: ${userId} already exists.`);
-          setIsSubscribed(getDoc(data.subscribed));
+          setIsSubscribed(data.subscribed || false);
         } else {
           console.log(
             `Document for userId: ${userId} does not exist. Creating document.`
@@ -48,6 +48,7 @@ export default function LandingPage() {
           console.log(
             `Document for userId: ${userId} created with subscribed: false and credits: 2.`
           );
+          setIsSubscribed(false);
         }
       } catch (error) {
         console.error("Error checking or creating user", error);
@@ -119,7 +120,7 @@ export default function LandingPage() {
     }
   };
   const handleOpenModal = () => setModalOpen(true);
-  const handleCloseModal = () => setModalClose(false);
+  const handleCloseModal = () => setModalOpen(false);
 
   return (
     // <Container maxWidth="lg">
