@@ -18,8 +18,8 @@ const creators = [
   },
   {
     id: 3,
-    name: "Creator 3",
-    imageSrc: "/creator1.jpg",
+    name: "Joel Jose",
+    imageSrc: "/joel.jpg",
     linkedinUrl: "https://www.linkedin.com/in/joel-jose-961147207/",
   },
 ];
