@@ -3,6 +3,8 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
 import Image from "next/image";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "@/firebase";
 
 export default function Header() {
   return (

@@ -21,8 +21,10 @@ export async function GET(req) {
     const paymentStatus = checkoutSession.payment_status;
 
     if (clerkUserId && paymentStatus === "paid") {
+      const subscriptionId = checkoutSession.subscription;
+
       const userDocRef = doc(db, "users", clerkUserId);
-      await updateDoc(userDocRef, { subscribed: true });
+      await updateDoc(userDocRef, { subscribed: true, subscriptionId });
     }
 
     return NextResponse.json(checkoutSession);
@@ -83,6 +85,51 @@ export async function POST(req) {
     return NextResponse.json(checkoutSession, { status: 200 });
   } catch (error) {
     console.error("Error creating checkout session:", error);
+    return NextResponse.json(
+      { error: { message: error.message } },
+      { status: 500 }
+    );
+  }
+}
+export async function DELETE(req) {
+  const { userId } = await req.json();
+  if (!userId) {
+    return NextResponse.json(
+      { error: { message: "User ID is required" } },
+      { status: 400 }
+    );
+  }
+
+  try {
+    // Get the user's subscription ID from Firestore
+    const userDocRef = doc(db, "users", userId);
+    const userDoc = await getDoc(userDocRef);
+
+    if (!userDoc.exists()) {
+      return NextResponse.json(
+        { error: { message: "User not found" } },
+        { status: 404 }
+      );
+    }
+
+    const { subscriptionId } = userDoc.data();
+
+    if (!subscriptionId) {
+      return NextResponse.json(
+        { error: { message: "No active subscription found" } },
+        { status: 400 }
+      );
+    }
+
+    // Cancel the Stripe subscription
+    await stripe.subscriptions.del(subscriptionId);
+
+    // Update Firestore to mark the user as unsubscribed
+    await updateDoc(userDocRef, { subscribed: false, subscriptionId: "" });
+
+    return NextResponse.json({ message: "Subscription canceled" });
+  } catch (error) {
+    console.error("Error canceling subscription:", error);
     return NextResponse.json(
       { error: { message: error.message } },
       { status: 500 }

@@ -1,20 +1,24 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import getStripe from "utils/get-stripe";
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Typography, Modal } from "@mui/material";
 import Testimonials from "./components/Testimonials";
 import MeetTheCreators from "./components/MeetTheCreators";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useAuth, useClerk } from "@clerk/nextjs";
 import GradientButton from "react-linear-gradient-button";
+import SubscribedModal from "./components/SubscribedModal";
 
 export default function LandingPage() {
   const router = useRouter();
   const { userId } = useAuth();
   const { openSignIn } = useClerk();
+
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const checkAndCreateUser = async () => {
@@ -30,7 +34,9 @@ export default function LandingPage() {
         const docSnap = await getDoc(userDocRef);
 
         if (docSnap.exists()) {
+          const data = docSnap.data();
           console.log(`Document for userId: ${userId} already exists.`);
+          setIsSubscribed(getDoc(data.subscribed));
         } else {
           console.log(
             `Document for userId: ${userId} does not exist. Creating document.`
@@ -96,6 +102,24 @@ export default function LandingPage() {
 
     router.push("/dashboard");
   };
+
+  const handleFreeTrialClick = () => {
+    if (isSubscribed) {
+      handleOpenModal();
+    } else {
+      handleGetStarted();
+    }
+  };
+
+  const handleSubscribeClick = () => {
+    if (isSubscribed) {
+      handleOpenModal();
+    } else {
+      handleSubmit();
+    }
+  };
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalClose(false);
 
   return (
     // <Container maxWidth="lg">
@@ -511,13 +535,19 @@ export default function LandingPage() {
                 how they can help you with your learning needs.
               </Typography>
               <Button
-                onClick={handleGetStarted}
+                onClick={handleFreeTrialClick}
                 variant="contained"
                 color="primary"
                 size="large"
               >
                 Get Free Trial
               </Button>
+              <SubscribedModal
+                open={modalOpen}
+                onClose={handleCloseModal}
+                message="You're already subscribed!"
+                onCloseButtonLabel="Close"
+              />
             </Box>
           </Grid>
           {/* Premium Plan */}
@@ -567,7 +597,7 @@ export default function LandingPage() {
               <Button
                 variant="contained"
                 size="large"
-                onClick={handleSubmit}
+                onClick={handleSubscribeClick}
                 sx={{
                   backgroundColor: "#f4f4f9",
                   color: "#2B2E3A", // Set text color to contrast with the background
@@ -578,6 +608,12 @@ export default function LandingPage() {
               >
                 Get Premium
               </Button>
+              <SubscribedModal
+                open={modalOpen}
+                onClose={handleCloseModal}
+                message="You're already subscribed!"
+                onCloseButtonLabel="Close"
+              />
             </Box>
           </Grid>
         </Grid>
